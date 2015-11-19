@@ -1,0 +1,17 @@
+﻿body {
+    background-color: azure;
+}
+
+.nav a {
+  color: #5a5a5a;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 14px 10px;
+  text-transform: uppercase;
+}
+
+.nav li {
+  display: inline;
+}
+
+

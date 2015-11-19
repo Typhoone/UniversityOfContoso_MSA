@@ -106,7 +106,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\main.css" />
+    <Content Include="css\shift.css" />
     <Content Include="Global.asax" />
+    <Content Include="Courses.html" />
+    <Content Include="blank.html" />
+    <Content Include="SignUp.html" />
+    <Content Include="SignIn.html" />
+    <Content Include="Tasks.html" />
     <Content Include="Index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -131,7 +139,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-    <Folder Include="css\" />
+    <Folder Include="images\" />
     <Folder Include="js\" />
     <Folder Include="Models\" />
   </ItemGroup>
