@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversityOfContoso.Models
 {
-    class Enrollment
+    public class Enrollment
     {
         public int EnrollmentID { get; set; }
         public int CourseID { get; set; }
