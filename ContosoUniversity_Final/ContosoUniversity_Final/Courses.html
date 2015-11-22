@@ -10,12 +10,15 @@
 
     <link rel="stylesheet" href="css/bootstrap.css">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/CoursePage.js"></script>
+    <script src="js/EnrollmentsModule.js"></script>
 
     <link rel="stylesheet" href="css/main.css" />
 </head>
-<body>
+<body data-ng-controller="courses">
     <div class="nav">
         <div class="container">
             <div class="nav navbar-nav">
@@ -53,18 +56,12 @@
                         <th>Type</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>01</td>
-                        <td>BurgerFlipping</td>
-                        <td>I am heading</td>
-                        <td>now</td>
-                        <td>erry day</td>
-                        <td>lecture</td>
-                    </tr>
+                <tbody class="courseContentTable">
+                    
 
                 </tbody>
             </table>
+            <p id="loadinmsg">You courses are being retrieved...</p>
         </div>
     </div>
 

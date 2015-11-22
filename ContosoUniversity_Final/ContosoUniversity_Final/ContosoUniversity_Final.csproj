@@ -143,15 +143,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="js\bootstrap.js" />
+    <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\CourseModule.js" />
+    <Content Include="js\CoursePage.js" />
+    <Content Include="js\EnrollmentsModule.js" />
+    <Content Include="js\jquery-1.10.2.min.js" />
     <Content Include="Web.config" />
-    <Content Include="website\Courses.html" />
-    <Content Include="website\css\bootstrap.css" />
-    <Content Include="website\css\main.css" />
-    <Content Include="website\css\shift.css" />
-    <Content Include="website\Index.html" />
-    <Content Include="website\SignIn.html" />
-    <Content Include="website\SignUp.html" />
-    <Content Include="website\Tasks.html" />
+    <Content Include="Courses.html" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\main.css" />
+    <Content Include="css\shift.css" />
+    <Content Include="Index.html" />
+    <Content Include="SignIn.html" />
+    <Content Include="SignUp.html" />
+    <Content Include="Tasks.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
@@ -174,6 +180,8 @@
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <None Include="Properties\PublishProfiles\ContosoUniversityGMAdams - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ContosoUniversityGMAdams - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
