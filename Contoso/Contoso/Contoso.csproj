@@ -155,6 +155,7 @@
     <Compile Include="Controllers\EnrollmentsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="DAL\UniContext.cs" />
+    <Compile Include="DAL\UniInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
