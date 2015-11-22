@@ -2,104 +2,127 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Web;
+using System.Web.Mvc;
 using UniversityOfContoso.DAL;
 using UniversityOfContoso.Models;
 
 namespace UniversityOfContoso.Controllers
 {
-    public class EnrollmentsController : ApiController
+    public class EnrollmentsController : Controller
     {
         private UniContext db = new UniContext();
 
-        // GET: api/Enrollments
-        public IQueryable<Enrollment> GetEnrollments()
+        // GET: Enrollments
+        public ActionResult Index()
         {
-            return db.Enrollments;
+            var enrollments = db.Enrollments.Include(e => e.Course).Include(e => e.Student);
+            return View(enrollments.ToList());
         }
 
-        // GET: api/Enrollments/5
-        [ResponseType(typeof(Enrollment))]
-        public IHttpActionResult GetEnrollment(int id)
+        // GET: Enrollments/Details/5
+        public ActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Enrollment enrollment = db.Enrollments.Find(id);
             if (enrollment == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(enrollment);
+            return View(enrollment);
         }
 
-        // PUT: api/Enrollments/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutEnrollment(int id, Enrollment enrollment)
+        // GET: Enrollments/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            ViewBag.CourseID = new SelectList(db.Courses, "courseID", "CourseName");
+            ViewBag.studentID = new SelectList(db.Students, "ID", "LastName");
+            return View();
+        }
 
-            if (id != enrollment.EnrollmentID)
+        // POST: Enrollments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "EnrollmentID,CourseID,studentID,gradePercent")] Enrollment enrollment)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(enrollment).State = EntityState.Modified;
-
-            try
-            {
+                db.Enrollments.Add(enrollment);
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EnrollmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            ViewBag.CourseID = new SelectList(db.Courses, "courseID", "CourseName", enrollment.CourseID);
+            ViewBag.studentID = new SelectList(db.Students, "ID", "LastName", enrollment.studentID);
+            return View(enrollment);
         }
 
-        // POST: api/Enrollments
-        [ResponseType(typeof(Enrollment))]
-        public IHttpActionResult PostEnrollment(Enrollment enrollment)
+        // GET: Enrollments/Edit/5
+        public ActionResult Edit(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Enrollments.Add(enrollment);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = enrollment.EnrollmentID }, enrollment);
-        }
-
-        // DELETE: api/Enrollments/5
-        [ResponseType(typeof(Enrollment))]
-        public IHttpActionResult DeleteEnrollment(int id)
-        {
             Enrollment enrollment = db.Enrollments.Find(id);
             if (enrollment == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            ViewBag.CourseID = new SelectList(db.Courses, "courseID", "CourseName", enrollment.CourseID);
+            ViewBag.studentID = new SelectList(db.Students, "ID", "LastName", enrollment.studentID);
+            return View(enrollment);
+        }
 
+        // POST: Enrollments/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "EnrollmentID,CourseID,studentID,gradePercent")] Enrollment enrollment)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(enrollment).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.CourseID = new SelectList(db.Courses, "courseID", "CourseName", enrollment.CourseID);
+            ViewBag.studentID = new SelectList(db.Students, "ID", "LastName", enrollment.studentID);
+            return View(enrollment);
+        }
+
+        // GET: Enrollments/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Enrollment enrollment = db.Enrollments.Find(id);
+            if (enrollment == null)
+            {
+                return HttpNotFound();
+            }
+            return View(enrollment);
+        }
+
+        // POST: Enrollments/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Enrollment enrollment = db.Enrollments.Find(id);
             db.Enrollments.Remove(enrollment);
             db.SaveChanges();
-
-            return Ok(enrollment);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -109,11 +132,6 @@ namespace UniversityOfContoso.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool EnrollmentExists(int id)
-        {
-            return db.Enrollments.Count(e => e.EnrollmentID == id) > 0;
         }
     }
 }

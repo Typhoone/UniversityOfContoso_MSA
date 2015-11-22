@@ -2,104 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Web;
+using System.Web.Mvc;
 using UniversityOfContoso.DAL;
 using UniversityOfContoso.Models;
 
 namespace UniversityOfContoso.Controllers
 {
-    public class CoursesController : ApiController
+    public class CoursesController : Controller
     {
         private UniContext db = new UniContext();
 
-        // GET: api/Courses
-        public IQueryable<Course> GetCourses()
+        // GET: Courses
+        public ActionResult Index()
         {
-            return db.Courses;
+            return View(db.Courses.ToList());
         }
 
-        // GET: api/Courses/5
-        [ResponseType(typeof(Course))]
-        public IHttpActionResult GetCourse(int id)
+        // GET: Courses/Details/5
+        public ActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(course);
+            return View(course);
         }
 
-        // PUT: api/Courses/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutCourse(int id, Course course)
+        // GET: Courses/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != course.courseID)
+        // POST: Courses/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "courseID,CourseName,Location,Time,Days,Type")] Course course)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(course).State = EntityState.Modified;
-
-            try
-            {
+                db.Courses.Add(course);
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(course);
         }
 
-        // POST: api/Courses
-        [ResponseType(typeof(Course))]
-        public IHttpActionResult PostCourse(Course course)
+        // GET: Courses/Edit/5
+        public ActionResult Edit(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Courses.Add(course);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = course.courseID }, course);
-        }
-
-        // DELETE: api/Courses/5
-        [ResponseType(typeof(Course))]
-        public IHttpActionResult DeleteCourse(int id)
-        {
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(course);
+        }
 
+        // POST: Courses/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "courseID,CourseName,Location,Time,Days,Type")] Course course)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(course).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(course);
+        }
+
+        // GET: Courses/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Course course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+            return View(course);
+        }
+
+        // POST: Courses/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Course course = db.Courses.Find(id);
             db.Courses.Remove(course);
             db.SaveChanges();
-
-            return Ok(course);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -109,11 +123,6 @@ namespace UniversityOfContoso.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool CourseExists(int id)
-        {
-            return db.Courses.Count(e => e.courseID == id) > 0;
         }
     }
 }

@@ -2,119 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Web;
+using System.Web.Mvc;
 using UniversityOfContoso.DAL;
 using UniversityOfContoso.Models;
 
 namespace UniversityOfContoso.Controllers
 {
-    public class AssignmentsController : ApiController
+    public class AssignmentsController : Controller
     {
         private UniContext db = new UniContext();
 
-        // GET: api/Assignments
-        public IQueryable<Assignment> GetAssignments()
+        // GET: Assignments
+        public ActionResult Index()
         {
-            return db.Assignments;
+            return View(db.Assignments.ToList());
         }
 
-        // GET: api/Assignments/5
-        [ResponseType(typeof(Assignment))]
-        public IHttpActionResult GetAssignment(string id)
+        // GET: Assignments/Details/5
+        public ActionResult Details(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Assignment assignment = db.Assignments.Find(id);
             if (assignment == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(assignment);
+            return View(assignment);
         }
 
-        // PUT: api/Assignments/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutAssignment(string id, Assignment assignment)
+        // GET: Assignments/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != assignment.AssignmentID)
+        // POST: Assignments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "AssignmentID,CourseID,DueTime,AssigLink")] Assignment assignment)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(assignment).State = EntityState.Modified;
-
-            try
-            {
+                db.Assignments.Add(assignment);
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AssignmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(assignment);
         }
 
-        // POST: api/Assignments
-        [ResponseType(typeof(Assignment))]
-        public IHttpActionResult PostAssignment(Assignment assignment)
+        // GET: Assignments/Edit/5
+        public ActionResult Edit(string id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Assignments.Add(assignment);
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (AssignmentExists(assignment.AssignmentID))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = assignment.AssignmentID }, assignment);
-        }
-
-        // DELETE: api/Assignments/5
-        [ResponseType(typeof(Assignment))]
-        public IHttpActionResult DeleteAssignment(string id)
-        {
             Assignment assignment = db.Assignments.Find(id);
             if (assignment == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(assignment);
+        }
 
+        // POST: Assignments/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "AssignmentID,CourseID,DueTime,AssigLink")] Assignment assignment)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(assignment).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(assignment);
+        }
+
+        // GET: Assignments/Delete/5
+        public ActionResult Delete(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Assignment assignment = db.Assignments.Find(id);
+            if (assignment == null)
+            {
+                return HttpNotFound();
+            }
+            return View(assignment);
+        }
+
+        // POST: Assignments/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            Assignment assignment = db.Assignments.Find(id);
             db.Assignments.Remove(assignment);
             db.SaveChanges();
-
-            return Ok(assignment);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -124,11 +123,6 @@ namespace UniversityOfContoso.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool AssignmentExists(string id)
-        {
-            return db.Assignments.Count(e => e.AssignmentID == id) > 0;
         }
     }
 }

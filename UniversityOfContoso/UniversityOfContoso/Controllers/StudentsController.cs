@@ -2,104 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Web;
+using System.Web.Mvc;
 using UniversityOfContoso.DAL;
 using UniversityOfContoso.Models;
 
 namespace UniversityOfContoso.Controllers
 {
-    public class StudentsController : ApiController
+    public class StudentsController : Controller
     {
         private UniContext db = new UniContext();
 
-        // GET: api/Students
-        public IQueryable<Student> GetStudents()
+        // GET: Students
+        public ActionResult Index()
         {
-            return db.Students;
+            return View(db.Students.ToList());
         }
 
-        // GET: api/Students/5
-        [ResponseType(typeof(Student))]
-        public IHttpActionResult GetStudent(int id)
+        // GET: Students/Details/5
+        public ActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Student student = db.Students.Find(id);
             if (student == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(student);
+            return View(student);
         }
 
-        // PUT: api/Students/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutStudent(int id, Student student)
+        // GET: Students/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != student.ID)
+        // POST: Students/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ID,LastName,FirstName,oauth_provider,oauth_uid,Password,Email")] Student student)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(student).State = EntityState.Modified;
-
-            try
-            {
+                db.Students.Add(student);
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(student);
         }
 
-        // POST: api/Students
-        [ResponseType(typeof(Student))]
-        public IHttpActionResult PostStudent(Student student)
+        // GET: Students/Edit/5
+        public ActionResult Edit(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Students.Add(student);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = student.ID }, student);
-        }
-
-        // DELETE: api/Students/5
-        [ResponseType(typeof(Student))]
-        public IHttpActionResult DeleteStudent(int id)
-        {
             Student student = db.Students.Find(id);
             if (student == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(student);
+        }
 
+        // POST: Students/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ID,LastName,FirstName,oauth_provider,oauth_uid,Password,Email")] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(student).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(student);
+        }
+
+        // GET: Students/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Student student = db.Students.Find(id);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+            return View(student);
+        }
+
+        // POST: Students/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Student student = db.Students.Find(id);
             db.Students.Remove(student);
             db.SaveChanges();
-
-            return Ok(student);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -109,11 +123,6 @@ namespace UniversityOfContoso.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool StudentExists(int id)
-        {
-            return db.Students.Count(e => e.ID == id) > 0;
         }
     }
 }
