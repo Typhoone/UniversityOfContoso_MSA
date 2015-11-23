@@ -7,14 +7,17 @@
     <link rel="icon" type="image/png" href="images/glyphicons_free/glyphicons/png/glyphicons-65-lightbulb.png" />
 
     <link href="css/shift.css" rel="stylesheet">
+    <script src="Scripts/jquery-2.1.4.min.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.css">
 
-    <script src="js/jquery-1.10.2.min.js"></script>
     <script src="js/bootstrap.js"></script>
+
+
     <script src="js/bootstrap.min.js"></script>
     <script src="js/CoursePage.js"></script>
     <script src="js/EnrollmentsModule.js"></script>
+    <script src="js/CourseModule.js"></script>
 
     <link rel="stylesheet" href="css/main.css" />
 </head>
@@ -45,7 +48,7 @@
 
     <div class="container">
         <div class="table-responsive">
-            <table class="table spaced-table table-hover" id="TableCourse">
+            <table class="table spaced-table table-hover hidden" id="TableCourse">
                 <thead>
                     <tr>
                         <th>Course ID</th>
@@ -54,6 +57,7 @@
                         <th>Time</th>
                         <th>Days</th>
                         <th>Type</th>
+                        <th>Submit</th>
                     </tr>
                 </thead>
                 <tbody class="courseContentTable">

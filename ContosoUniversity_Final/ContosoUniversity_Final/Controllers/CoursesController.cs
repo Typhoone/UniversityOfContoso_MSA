@@ -10,9 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using ContosoUniversity_Final.DAL;
 using ContosoUniversity_Final.Models;
+using System.Web.Http.Cors;
 
 namespace ContosoUniversity_Final.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CoursesController : ApiController
     {
         private UniContext db = new UniContext();

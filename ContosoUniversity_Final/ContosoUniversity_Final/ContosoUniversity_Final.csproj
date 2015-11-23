@@ -148,7 +148,9 @@
     <Content Include="js\CourseModule.js" />
     <Content Include="js\CoursePage.js" />
     <Content Include="js\EnrollmentsModule.js" />
-    <Content Include="js\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Web.config" />
     <Content Include="Courses.html" />
     <Content Include="css\bootstrap.css" />
@@ -182,6 +184,7 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <None Include="Properties\PublishProfiles\ContosoUniversityGMAdams - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ContosoUniversityGMAdams - Web Deploy.pubxml" />
+    <Content Include="Scripts\jquery.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

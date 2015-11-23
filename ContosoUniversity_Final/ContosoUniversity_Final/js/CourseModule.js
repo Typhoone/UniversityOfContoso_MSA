@@ -9,20 +9,20 @@
                 if (xhttp.readyState == 4 && xhttp.status == 200) {
                     loadedCourseInfo();
                 }
+            }
 
-                //connects and queries for the data
-                xhttp.open("GET", "http://contosouniversitygmadams.azurewebsites.net/api/Courses" + id, true);
-                xhttp.setRequestHeader("Content-type", "application/json");
-                xhttp.send(null);
+            //connects and queries for the data
+            xhttp.open("GET", "http://contosouniversitygmadams.azurewebsites.net/api/Courses/" + id, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(null);
 
 
-                //parse the JSON data and send it back to that who called it
-                function loadedCourseInfo() {
-                    var courseList = JSON.parse(xhttp.responseText);
-                    callback(courseList);
-                    return courseList;
-                }
-            };
+            //parse the JSON data and send it back to that who called it
+            function loadedCourseInfo() {
+                var courseList = JSON.parse(xhttp.responseText);
+                callback(courseList);
+                return courseList;
+            }
         }
     };
 
