@@ -93,6 +93,7 @@ function loadCoursesTable(controller) {
             
 
             document.getElementById("TableCourse").classList.remove("hidden");
+            document.getElementById("addCourseBtn").classList.remove("disabled");
             document.getElementById("loadinmsg").style.display = "none";
             
         }

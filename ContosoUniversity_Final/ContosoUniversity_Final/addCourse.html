@@ -2,9 +2,25 @@
 <html>
 <head>
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="images/glyphicons_free/glyphicons/png/glyphicons-65-lightbulb.png" />
+
+    <link href="css/shift.css" rel="stylesheet">
+    <script src="Scripts/jquery-2.1.4.min.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/EnrollmentsModule.js"></script>
+    <script src="js/CourseModule.js"></script>
+
+    <script src="js/addCourse.js"></script>
+
+
 </head>
-<body>
+<body data-ng-controller="addCourse">
     <div class="nav">
         <div class="container">
             <div class="nav navbar-nav">
@@ -26,6 +42,20 @@
                 </ul>
             </div>
 
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="form-group input-sm">
+                <label for="courses">Select Course</label>
+                <select class="form-control" id="courseOptions"></select>
+
+            </div>
+            <br />
+            <button type="button" class="btn btn-lg btn-primary disabled" id="enrolBtn">Enroll in Course</button>
         </div>
     </div>
 
