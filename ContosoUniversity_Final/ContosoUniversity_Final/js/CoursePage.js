@@ -65,13 +65,25 @@ function loadCoursesTable(controller) {
                     var subCol = document.createElement('td');
                     var subBtn = document.createElement('button');
                     subBtn.className = "btn btn-default";
-                    subBtn.innerHTML = "Edit";
+                    subBtn.innerHTML = "Submit";
 
-                    subBtn.setAttribute("data-id", enrollment.EnrollmentID);
+                    subBtn.setAttribute("enroll-id", enrollment.EnrollmentID);
                     subBtn.setAttribute("data-btntype", "submit");
 
                     subCol.appendChild(subBtn);
-                    row.appendChild(subBtn);
+                    row.appendChild(subCol);
+
+                    //edit
+                    var edtCol = document.createElement('td');
+                    var edtBtn = document.createElement('button');
+                    edtBtn.className = "btn btn-default";
+                    edtBtn.innerHTML = "Delete";
+
+                    edtBtn.setAttribute("enroll-id", enrollment.EnrollmentID);
+                    edtBtn.setAttribute("data-btntype", "delete");
+
+                    edtCol.appendChild(edtBtn);
+                    row.appendChild(edtCol);
 
                     courseTable.appendChild(row);
 
@@ -84,6 +96,34 @@ function loadCoursesTable(controller) {
             document.getElementById("loadinmsg").style.display = "none";
             
         }
+
+        courseTable.addEventListener('click', function (e) {
+            var target = e.target;
+
+            // Bubble up to tbody - need to bubble the event up because the click occurs in 
+            // the td cells but the data-id attribute is in the row (for going to more detail page)
+            while (target.nodeName.toLowerCase() !== "tbody") {
+
+                // For all these cases we use the data-id stored in either the cell or the row to keep context
+                // between seperate pages
+
+                // Edit
+                if (target.getAttribute("data-btntype") === "submit") {
+                    window.location.href = 'edit.html' + '?type=' + controller + '&id=' + target.getAttribute("enroll-id");
+                    return;
+
+                    // Delete
+                } else if (target.getAttribute("data-btntype") === "delete") {
+                    enrollmentModule.deleteEnroll(target.getAttribute("enroll-id"), function () {
+                        window.location.reload(true);
+                    })
+                    return;
+                } 
+
+                // Keep bubbling the event up through the DOM
+                target = target.parentNode;
+            }
+        });
 
 
     }

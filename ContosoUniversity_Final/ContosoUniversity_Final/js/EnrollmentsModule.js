@@ -23,7 +23,41 @@
                 callback(rollList);
                 return rollList;
             }
+        },
+
+        deleteEnroll: function (enrolID, callback) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    callback();
+                }
+            }
+
+            xhttp.open("DELETE", "http://contosouniversitygmadams.azurewebsites.net/api/Enrollments/" + enrolID, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            xhttp.send();
+        },
+
+        addEnrollment: function (enrollment, callback) {
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 201) {
+                    callback();
+                }
+            }
+
+            xhttp.open("POST", "http://contosouniversitygmadams.azurewebsites.net/api/Enrollments", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            xhttp.send(JSON.stringify(enrollment));
+
         }
+
+
     };
 
 }());
