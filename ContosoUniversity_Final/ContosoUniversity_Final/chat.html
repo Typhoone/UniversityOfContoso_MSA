@@ -12,6 +12,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="css/main.css" />
+
+    <script>
+        //Used to automaticly move the chat window down the page
+        window.setInterval(function () {
+            var elem = document.getElementsByClassName('MessageArea')[0];
+            elem.scrollTop = elem.scrollHeight;
+        }, 1000);
+        //Move the chat window down after sending a message
+        window.addEventListener('click', function (e) {
+            var target = e.target;
+            if (target.getAttribute("action") === 'scrollDown') {
+                var elem = document.getElementsByClassName('MessageArea')[0];
+                elem.scrollTop = elem.scrollHeight;
+            }
+        });
+    </script>
     
 </head>
 <body>
@@ -43,10 +59,14 @@
 
 
     <div class="container">
-        <input type="text" id="message" />
-        <input type="button" id="sendmessage" value="Send" />
-        <input type="hidden" id="displayname" />
-        <ul id="discussion"></ul>
+        <div class="MessageBar">
+            <input type="text" id="message" />
+            <input type="button" id="sendmessage" value="Send" action="scrollDown" />
+            <input type="hidden" id="displayname" />
+        </div>
+        <div class="MessageArea">
+            <ul id="discussion"></ul>
+        </div>
     </div>
     <!--Script references. -->
     <!--Reference the jQuery library. -->
