@@ -45,7 +45,7 @@ function loadTaskTable(controller) {
                     row.appendChild(courseIDcol);
 
                     var courseDuecol = document.createElement('td');
-                    courseDuecol.innerHTML = tasks[i].DueTime;
+                    courseDuecol.innerHTML = tasks[j].DueTime;
                     row.appendChild(courseDuecol);
 
                     var courseLinkcol = document.createElement('td');
@@ -53,7 +53,7 @@ function loadTaskTable(controller) {
                     var linkText = document.createTextNode("Link");
                     a.appendChild(linkText);
                     a.title = "Link";
-                    a.href = "http://" + tasks[i].AssigLink;
+                    a.href = "http://" + tasks[j].AssigLink;
 
                     courseLinkcol.appendChild(a);
 /*var linkBtn = document.createElement('button');
