@@ -150,6 +150,8 @@
     <Content Include="js\CoursePage.js" />
     <Content Include="js\EnrollmentsModule.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="js\getTaskModule.js" />
+    <Content Include="js\taskPage.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Web.config" />
