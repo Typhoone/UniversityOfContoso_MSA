@@ -1,4 +1,8 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
+    $(".showBtn").click(function () {
+        $(".oldTbl").toggle('show');
+    });
+
     var controller = document.body.getAttribute("data-ng-controller");
     if (controller == "Tasks") {
         loadTaskTable(controller);
@@ -34,6 +38,8 @@ function loadTaskTable(controller) {
     function addToTable(tasks, enrollments) {
 
         var table = document.getElementById("assigContentTable");
+        var oldTable = document.getElementById("OldassigContentTable");
+
         for(i = 0; i < enrollments.length; i++){
             for (j = 0; j < tasks.length; j++) {
                 if (enrollments[i].CourseID == tasks[j].CourseID) {
@@ -54,25 +60,29 @@ function loadTaskTable(controller) {
                     a.appendChild(linkText);
                     a.title = "Link";
                     a.href = "http://" + tasks[j].AssigLink;
+                    a.classList.add("btn");
+                    a.classList.add("btn-info");
 
                     courseLinkcol.appendChild(a);
-/*var linkBtn = document.createElement('button');
-                    linkBtn.className = "btn btn-default";
-                    linkBtn.innerHTML = "Link";
-
-                    linkBtn.setAttribute("link-id", tasks[i].AssigLink);
-                    linkBtn.setAttribute("data-btntype", "link");
-
-                    courseLinkcol.appendChild(linkBtn);*/
                     
                     row.appendChild(courseLinkcol);
 
-                    table.appendChild(row);
+                    var currenttimeStamp = Math.floor(Date.now());
+
+                    var dueTimestamp = Date.parse(tasks[j].DueTime);
+
+                    if (currenttimeStamp < dueTimestamp) {
+                        table.appendChild(row);
+                    } else {
+                        oldTable.appendChild(row);
+                    }
+                    
 
 
                 }
 
                 document.getElementById("loadinmsg").style.display = "none";
+                document.getElementById("oldloadinmsg").style.display = "none";
             }
         }
 
