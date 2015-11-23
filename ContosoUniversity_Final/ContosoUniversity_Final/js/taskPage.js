@@ -53,7 +53,7 @@ function loadTaskTable(controller) {
                     var linkText = document.createTextNode("Link");
                     a.appendChild(linkText);
                     a.title = "Link";
-                    a.href = tasks[i].AssigLink;
+                    a.href = "http://" + tasks[i].AssigLink;
 
                     courseLinkcol.appendChild(a);
 /*var linkBtn = document.createElement('button');
