@@ -1,6 +1,6 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
     var controller = document.body.getAttribute("data-ng-controller");
-    if (controller == "tasks") {
+    if (controller == "Tasks") {
         loadTaskTable(controller);
     }
 });
@@ -16,116 +16,77 @@ function loadTaskTable(controller) {
     });
 
     function setupTaskTable(enrollments) {
-
-
-
-        //traverses thorugh enrollemts to find a math, poor code but best i can do at this stage
-        for (i = 0; i < enrollments.length; i++) {
-            if (enrollments[i].studentID == userID) {
-                displayTaskRow(enrollments[i]);
+        
+        
+        var tasks = [];
+        courseModule.getTasks(function (taskList) {
+            for (i = 0; i < taskList.length; i++) {
+                tasks.push(taskList[i]);
             }
-        }
 
-        //appends table with data
-        function displayTaskRow(enrollment) {
+            addToTable(tasks, enrollments);
+        });
+        
+        
+       
+    }
 
-            courseModule.getCoursefromID(enrollment.CourseID, function (courseList) {
-                for (i = 0; i < 1; i++) {
+    function addToTable(tasks, enrollments) {
 
+        var table = document.getElementById("assigContentTable");
+        for(i = 0; i < enrollments.length; i++){
+            for (j = 0; j < tasks.length; j++) {
+                if (enrollments[i].CourseID == tasks[j].CourseID) {
                     var row = document.createElement('tr');
-                    row.setAttribute("data-id", enrollment.EnrollmentID);
+                    row.setAttribute("data-id", enrollments[i].CourseID);
 
-                    //create cols
                     var courseIDcol = document.createElement('td');
-                    courseIDcol.innerHTML = courseList.courseID;
+                    courseIDcol.innerHTML = enrollments[i].CourseID;
                     row.appendChild(courseIDcol);
 
-                    var courseNamecol = document.createElement('td');
-                    courseNamecol.innerHTML = courseList.CourseName;
-                    row.appendChild(courseNamecol);
+                    var courseDuecol = document.createElement('td');
+                    courseDuecol.innerHTML = tasks[i].DueTime;
+                    row.appendChild(courseDuecol);
 
-                    var courseLoc = document.createElement('td');
-                    courseLoc.innerHTML = courseList.Location;
-                    row.appendChild(courseLoc);
+                    var courseLinkcol = document.createElement('td');
+                    var a = document.createElement('a');
+                    var linkText = document.createTextNode("Link");
+                    a.appendChild(linkText);
+                    a.title = "Link";
+                    a.href = tasks[i].AssigLink;
 
-                    var courseTim = document.createElement('td');
-                    courseTim.innerHTML = courseList.Time;
-                    row.appendChild(courseTim);
+                    courseLinkcol.appendChild(a);
+/*var linkBtn = document.createElement('button');
+                    linkBtn.className = "btn btn-default";
+                    linkBtn.innerHTML = "Link";
 
-                    var courseDay = document.createElement('td');
-                    courseDay.innerHTML = courseList.Days;
-                    row.appendChild(courseDay);
+                    linkBtn.setAttribute("link-id", tasks[i].AssigLink);
+                    linkBtn.setAttribute("data-btntype", "link");
 
-                    var courseTpe = document.createElement('td');
-                    courseTpe.innerHTML = courseList.Type;
-                    row.appendChild(courseTpe);
+                    courseLinkcol.appendChild(linkBtn);*/
+                    
+                    row.appendChild(courseLinkcol);
 
+                    table.appendChild(row);
 
-                    //submit button
-                    var subCol = document.createElement('td');
-                    var subBtn = document.createElement('button');
-                    subBtn.className = "btn btn-default";
-                    subBtn.innerHTML = "Submit";
-
-                    subBtn.setAttribute("enroll-id", enrollment.EnrollmentID);
-                    subBtn.setAttribute("data-btntype", "submit");
-
-                    subCol.appendChild(subBtn);
-                    row.appendChild(subCol);
-
-                    //edit
-                    var edtCol = document.createElement('td');
-                    var edtBtn = document.createElement('button');
-                    edtBtn.className = "btn btn-default";
-                    edtBtn.innerHTML = "Delete";
-
-                    edtBtn.setAttribute("enroll-id", enrollment.EnrollmentID);
-                    edtBtn.setAttribute("data-btntype", "delete");
-
-                    edtCol.appendChild(edtBtn);
-                    row.appendChild(edtCol);
-
-                    TaskTable.appendChild(row);
 
                 }
-            });
 
-
-
-            document.getElementById("TableCourse").classList.remove("hidden");
-            document.getElementById("loadinmsg").style.display = "none";
-
+                document.getElementById("loadinmsg").style.display = "none";
+            }
         }
 
-        TaskTable.addEventListener('click', function (e) {
+        /*table.addEventListener('click', function (e) {
             var target = e.target;
-
-            // Bubble up to tbody - need to bubble the event up because the click occurs in 
-            // the td cells but the data-id attribute is in the row (for going to more detail page)
-            while (target.nodeName.toLowerCase() !== "tbody") {
-
-                // For all these cases we use the data-id stored in either the cell or the row to keep context
-                // between seperate pages
-
-                // Edit
-                if (target.getAttribute("data-btntype") === "submit") {
-                    window.location.href = 'edit.html' + '?type=' + controller + '&id=' + target.getAttribute("enroll-id");
-                    return;
-
-                    // Delete
-                } else if (target.getAttribute("data-btntype") === "delete") {
-                    enrollmentModule.deleteEnroll(target.getAttribute("enroll-id"), function () {
-                        window.location.reload(true);
-                    })
-                    return;
-                }
-
-                // Keep bubbling the event up through the DOM
-                target = target.parentNode;
+            alert();
+            if (target.getAttribute("data-btntype") === "link") {
+                
+                window.open(target.getAttribute("link-id"), "_self")
+                return;
             }
-        });
-
-
+            
+        });*/
+        
     }
 
 }

@@ -14,6 +14,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="css/main.css" />
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/EnrollmentsModule.js"></script>
+    <script src="js/CourseModule.js"></script>
+
+    <script src="js/taskPage.js"></script>
+    
+
+
+
 </head>
 <body data-ng-controller="Tasks">
     <div class="nav">
@@ -41,31 +51,22 @@
     </div>
 
     <div class="container">
+        <h2>Current Assignments</h2>
         <div class="table-responsive">
-            <table class="table spaced-table table-hover" id="TableCourse">
+            <table class="table spaced-table table-hover" id="assigTable">
                 <thead>
                     <tr>
                         <th>Course ID</th>
-                        <th>Course Name</th>
-                        <th>Where</th>
-                        <th>Time</th>
-                        <th>Days</th>
-                        <th>Type</th>
+                        <th>Due Time</th>
+                        <th>Link</th>
                     </tr>
                 </thead>
-                <tbody id="taskTable">
-                    <tr>
-                        <td>01</td>
-                        <td>BurgerFlipping</td>
-                        <td>I am heading</td>
-                        <td>now</td>
-                        <td>erry day</td>
-                        <td>lecture</td>
-                    </tr>
-
-                </tbody>
+                <tbody id="assigContentTable"></tbody>
             </table>
+            <p id="loadinmsg">You courses are being retrieved...</p>
         </div>
+
+
     </div>
 
 </body>

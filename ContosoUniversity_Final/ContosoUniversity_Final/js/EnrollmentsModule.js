@@ -52,7 +52,6 @@
 
             xhttp.open("POST", "http://contosouniversitygmadams.azurewebsites.net/api/Enrollments", true);
             xhttp.setRequestHeader("Content-type", "application/json");
-            alert(JSON.stringify(enrollment));
             xhttp.send(JSON.stringify(enrollment));
 
         }

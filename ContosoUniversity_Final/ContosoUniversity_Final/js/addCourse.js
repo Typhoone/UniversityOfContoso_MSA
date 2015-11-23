@@ -40,7 +40,6 @@ function loadCourses(controller) {
                 };
 
                 enrollmentModule.addEnrollment(newEnrollment, function () {
-                    alert("enrollment added");
                     window.location.href = "Courses.html";
                 })
             }
